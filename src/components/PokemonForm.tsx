@@ -10,7 +10,7 @@ const PokemonForm = () => {
 
 	return (
 		<div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-			<h2 className="text-2xl font-bold mb-4">Pokémon Trainer Form</h2>
+			<h2 className="text-2xl font-bold mb-4">Pokemon Trainer Form</h2>
 
 			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				{/* First Name Input */}
@@ -47,9 +47,9 @@ const PokemonForm = () => {
 					{errors.lastName && <p className="text-red-500">{String(errors.lastName.message)}</p>}
 				</div>
 
-				{/* Pokémon Selection */}
+				{/* Pokemon Selection */}
 				<div>
-					<label className="block font-semibold">Select Your Pokémon Team:</label>
+					<label className="block font-semibold">Select Your Pokemon Team:</label>
 					<PokemonSelect />
 				</div>
 
