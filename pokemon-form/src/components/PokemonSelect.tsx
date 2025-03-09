@@ -1,21 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
-import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
-import { CheckIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
+import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/20/solid'
 
 interface Pokemon {
 	id: number
 	name: string
 	avatar: string
-	sprite: string // Full sprite for later use
+	sprite: string
 }
 
-export default function PokemonSelect() {
+interface PokemonSelectProps {
+	selectedPokemons: Pokemon[]
+	setSelectedPokemons: (pokemons: Pokemon[]) => void
+}
+
+export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }: PokemonSelectProps) {
 	const [pokemonList, setPokemonList] = useState<Pokemon[]>([])
-	const [selectedPokemons, setSelectedPokemons] = useState<Pokemon[]>([])
 
 	// Fetch Pokémon list
 	useEffect(() => {
@@ -31,8 +34,8 @@ export default function PokemonSelect() {
 						return {
 							id: details.data.id,
 							name: details.data.name,
-							avatar: details.data.sprites.front_default, // Use front sprite for dropdown
-							sprite: details.data.sprites.other['official-artwork'].front_default, // Full image for later
+							avatar: details.data.sprites.front_default,
+							sprite: details.data.sprites.other['official-artwork'].front_default,
 						}
 					})
 				)
@@ -45,9 +48,9 @@ export default function PokemonSelect() {
 		fetchPokemon()
 	}, [])
 
-	// Handle selection (max 4 Pokémon)
+	// Handle Pokémon selection (max 4)
 	const handleSelectionChange = (selectedValues: Pokemon[]) => {
-		if (selectedValues.length > 4) return // Prevent selecting more than 4
+		if (selectedValues.length > 4) return
 		setSelectedPokemons(selectedValues)
 	}
 
