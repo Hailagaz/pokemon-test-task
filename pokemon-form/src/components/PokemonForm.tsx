@@ -11,6 +11,8 @@ interface Pokemon {
 	name: string
 	avatar: string
 	sprite: string
+	types: string[]
+	abilities: string[]
 }
 
 // ✅ Define the expected form structure

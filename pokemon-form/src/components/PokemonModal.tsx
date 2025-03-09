@@ -13,6 +13,8 @@ interface ModalProps {
 		id: number
 		name: string
 		sprite: string
+		types: string[]
+		abilities: string[]
 	}[]
 }
 
@@ -22,18 +24,35 @@ export default function PokemonModal({ isOpen, onClose, trainerName, trainerLast
 			<Dialog as="div" className="relative z-10" onClose={onClose}>
 				<div className="fixed inset-0 bg-black bg-opacity-50" />
 				<div className="fixed inset-0 flex items-center justify-center">
-					<Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+					<Dialog.Panel className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
 						<Dialog.Title className="text-lg font-bold text-gray-900">Trainer Info</Dialog.Title>
 						<p className="mt-2 text-gray-700">
 							Trainer: <strong>{trainerName} {trainerLastName}</strong>
 						</p>
 
 						{/* Pokémon List */}
-						<div className="mt-4 space-y-3">
+						<div className="mt-4 space-y-4">
+							<h3 className="text-lg font-bold text-gray-900">Selected Pokemons</h3>
 							{selectedPokemons.map((pokemon) => (
-								<div key={pokemon.id} className="flex items-center space-x-3 border p-2 rounded-md">
-									<img src={pokemon.sprite} alt={pokemon.name} className="w-12 h-12" />
-									<p className="text-lg font-semibold">{pokemon.name}</p>
+								<div key={pokemon.id} className="flex items-center border p-3 rounded-lg shadow-sm">
+									<img src={pokemon.sprite} alt={pokemon.name} className="w-24 h-24 rounded-md" />
+									<div className="ml-4">
+										<p className="text-xl font-bold text-gray-900">{pokemon.name}</p>
+
+										{/* Pokémon Types */}
+										<div className="flex space-x-2 mt-1">
+											{pokemon.types.map((type) => (
+												<span key={type} className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-md">
+													{type}
+												</span>
+											))}
+										</div>
+
+										{/* Pokémon Abilities */}
+										<p className="mt-2 text-sm text-gray-700">
+											<strong>Abilities:</strong> {pokemon.abilities.join(', ')}
+										</p>
+									</div>
 								</div>
 							))}
 						</div>

@@ -12,6 +12,8 @@ interface Pokemon {
 	name: string
 	avatar: string
 	sprite: string
+	types: string[]
+	abilities: string[]
 }
 
 // ✅ Props for Passing Selected Pokémon State
@@ -38,6 +40,8 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 							name: details.data.name,
 							avatar: details.data.sprites.front_default,
 							sprite: details.data.sprites.other['official-artwork'].front_default,
+							types: details.data.types.map((t: { type: { name: string } }) => t.type.name),
+							abilities: details.data.abilities.map((a: { ability: { name: string } }) => a.ability.name),
 						}
 					})
 				)
