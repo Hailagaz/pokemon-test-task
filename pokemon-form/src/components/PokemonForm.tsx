@@ -11,16 +11,14 @@ export default function PokemonForm() {
 		watch,
 		formState: { errors, isValid },
 	} = useForm({
-		mode: 'onChange', // Validate fields as user types
+		mode: 'onChange',
 	})
 
 	const [selectedPokemons, setSelectedPokemons] = useState([])
 
-	// Watch input fields for validation
 	const firstName = watch('firstName', '')
 	const lastName = watch('lastName', '')
 
-	// Check if the form is valid
 	const isFormValid =
 		firstName.length >= 2 &&
 		firstName.length <= 12 &&
@@ -30,7 +28,6 @@ export default function PokemonForm() {
 		/^[a-zA-Z]+$/.test(lastName) &&
 		selectedPokemons.length === 4
 
-	// Handle form submission (Show Modal)
 	const onSubmit = (data: any) => {
 		alert(`Trainer: ${data.firstName} ${data.lastName}\nPokémon Team: ${selectedPokemons.map((p) => p.name).join(', ')}`)
 	}
@@ -84,6 +81,11 @@ export default function PokemonForm() {
 
 					{/* Pokémon Select Component */}
 					<PokemonSelect selectedPokemons={selectedPokemons} setSelectedPokemons={setSelectedPokemons} />
+
+					{/* Pokémon Selection Warning */}
+					{selectedPokemons.length !== 4 && (
+						<p className="text-red-500 text-sm">Select 4 Pokémon</p>
+					)}
 
 					{/* Submit Button */}
 					<button
