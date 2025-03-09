@@ -1,24 +1,37 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import PokemonSelect from './PokemonSelect.tsx'
+
+// ✅ Define Type for Pokémon
+interface Pokemon {
+	id: number
+	name: string
+	avatar: string
+	sprite: string
+}
+
+// ✅ Define the expected form structure
+interface FormData {
+	firstName: string
+	lastName: string
+}
 
 export default function PokemonForm() {
 	const {
 		register,
 		handleSubmit,
 		watch,
-		formState: { errors, isValid },
-	} = useForm({
-		mode: 'onChange',
-	})
+		formState: { errors },
+	} = useForm<FormData>({ mode: 'onChange' })
 
-	const [selectedPokemons, setSelectedPokemons] = useState([])
+	const [selectedPokemons, setSelectedPokemons] = useState<Pokemon[]>([])
 
 	const firstName = watch('firstName', '')
 	const lastName = watch('lastName', '')
 
+	// ✅ Check if Form is Valid
 	const isFormValid =
 		firstName.length >= 2 &&
 		firstName.length <= 12 &&
@@ -28,7 +41,8 @@ export default function PokemonForm() {
 		/^[a-zA-Z]+$/.test(lastName) &&
 		selectedPokemons.length === 4
 
-	const onSubmit = (data: any) => {
+	// ✅ Fix Type Error in Submit Function
+	const onSubmit: SubmitHandler<FormData> = (data) => {
 		alert(`Trainer: ${data.firstName} ${data.lastName}\nPokémon Team: ${selectedPokemons.map((p) => p.name).join(', ')}`)
 	}
 
@@ -43,54 +57,34 @@ export default function PokemonForm() {
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 					{/* First Name */}
 					<div>
-						<label htmlFor="first-name" className="block text-sm font-medium text-gray-900">
-							First name
-						</label>
+						<label className="block text-sm font-medium text-gray-900">First name</label>
 						<input
-							id="first-name"
-							type="text"
-							{...register('firstName', {
-								required: true,
-								minLength: 2,
-								maxLength: 12,
-								pattern: /^[a-zA-Z]+$/,
-							})}
-							className="block w-full rounded-md border px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
+							{...register('firstName', { required: true, minLength: 2, maxLength: 12, pattern: /^[a-zA-Z]+$/ })}
+							className="block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
 						/>
 						{errors.firstName && <p className="text-red-500 text-sm">First name must be 2-12 letters.</p>}
 					</div>
 
 					{/* Last Name */}
 					<div>
-						<label htmlFor="last-name" className="block text-sm font-medium text-gray-900">
-							Last name
-						</label>
+						<label className="block text-sm font-medium text-gray-900">Last name</label>
 						<input
-							id="last-name"
-							type="text"
-							{...register('lastName', {
-								required: true,
-								minLength: 2,
-								maxLength: 12,
-								pattern: /^[a-zA-Z]+$/,
-							})}
-							className="block w-full rounded-md border px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
+							{...register('lastName', { required: true, minLength: 2, maxLength: 12, pattern: /^[a-zA-Z]+$/ })}
+							className="block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
 						/>
 						{errors.lastName && <p className="text-red-500 text-sm">Last name must be 2-12 letters.</p>}
 					</div>
 
-					{/* Pokémon Select Component */}
+					{/* Pokémon Select */}
 					<PokemonSelect selectedPokemons={selectedPokemons} setSelectedPokemons={setSelectedPokemons} />
 
 					{/* Pokémon Selection Warning */}
-					{selectedPokemons.length !== 4 && (
-						<p className="text-red-500 text-sm">Select 4 Pokémon</p>
-					)}
+					{selectedPokemons.length !== 4 && <p className="text-red-500 text-sm">Select 4 Pokémon</p>}
 
 					{/* Submit Button */}
 					<button
 						type="submit"
-						className={`w-full rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-sm ${isFormValid ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-400 cursor-not-allowed'
+						className={`w-full rounded-md px-3 py-1.5 text-sm font-semibold text-white ${isFormValid ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-400 cursor-not-allowed'
 							}`}
 						disabled={!isFormValid}
 					>

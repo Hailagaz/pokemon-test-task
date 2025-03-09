@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
-import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/20/solid'
+import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
+import { CheckIcon } from '@heroicons/react/20/solid'
+import axios from 'axios'
 
+// ✅ Define Type for Pokémon
 interface Pokemon {
 	id: number
 	name: string
@@ -12,6 +14,7 @@ interface Pokemon {
 	sprite: string
 }
 
+// ✅ Props for Passing Selected Pokémon State
 interface PokemonSelectProps {
 	selectedPokemons: Pokemon[]
 	setSelectedPokemons: (pokemons: Pokemon[]) => void
@@ -20,14 +23,13 @@ interface PokemonSelectProps {
 export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }: PokemonSelectProps) {
 	const [pokemonList, setPokemonList] = useState<Pokemon[]>([])
 
-	// Fetch Pokémon list
+	// ✅ Fetch Pokémon List
 	useEffect(() => {
 		const fetchPokemon = async () => {
 			try {
 				const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=50')
 				const results = response.data.results
 
-				// Fetch details for each Pokémon
 				const pokemonDetails = await Promise.all(
 					results.map(async (pokemon: { name: string; url: string }) => {
 						const details = await axios.get(pokemon.url)
@@ -48,7 +50,7 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 		fetchPokemon()
 	}, [])
 
-	// Handle Pokémon selection (max 4)
+	// ✅ Selection Handler (Max 4 Pokémon)
 	const handleSelectionChange = (selectedValues: Pokemon[]) => {
 		if (selectedValues.length > 4) return
 		setSelectedPokemons(selectedValues)
@@ -77,8 +79,7 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 							key={pokemon.id}
 							value={pokemon}
 							className={({ active }) =>
-								`cursor-pointer select-none py-2 px-4 flex items-center justify-between ${active ? 'bg-indigo-600 text-white' : 'text-gray-900'
-								}`
+								`cursor-pointer select-none py-2 px-4 flex items-center justify-between ${active ? 'bg-indigo-600 text-white' : 'text-gray-900'}`
 							}
 						>
 							<div className="flex items-center">
