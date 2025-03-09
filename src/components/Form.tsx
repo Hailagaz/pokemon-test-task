@@ -1,99 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import Select from './Select';
 import axios from 'axios';
 import { Pokemon } from '../types';
-
-// interface FormProps {
-// 	// Add props if needed
-// }
-
-// const Form: React.FC<FormProps> = () => {
-// 	const [firstName, setFirstName] = useState('');
-// 	const [lastName, setLastName] = useState('');
-// 	const [selectedPokemon, setSelectedPokemon] = useState<Pokemon[]>([]);
-// 	const [pokemonOptions, setPokemonOptions] = useState<Pokemon[]>([]);
-
-// 	const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-// 		setFirstName(event.target.value);
-// 	};
-
-// 	const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-// 		setLastName(event.target.value);
-// 	};
-
-// 	const handlePokemonSelect = (pokemon: Pokemon) => {
-// 		setSelectedPokemon((prevPokemon) => [...prevPokemon, pokemon]);
-// 	};
-
-// 	useEffect(() => {
-// 		axios.get('https://pokeapi.co/api/v2/pokemon?limit=1000')
-// 			.then(response => {
-// 				const pokemonData = response.data.results;
-// 				const pokemonOptions = pokemonData.map((pokemon: any) => ({
-// 					id: pokemon.id,
-// 					name: pokemon.name,
-// 					sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`,
-// 				}));
-// 				setPokemonOptions(pokemonOptions);
-// 			})
-// 			.catch(error => {
-// 				console.error(error);
-// 			});
-// 	}, []);
-
-// 	return (
-// 		<form className="max-w-md mx-auto p-4 bg-white rounded-md shadow-md">
-// 			<div className="mb-4">
-// 				<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
-// 					First Name
-// 				</label>
-// 				<input
-// 					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-// 					id="firstName"
-// 					type="text"
-// 					value={firstName}
-// 					onChange={handleFirstNameChange}
-// 				/>
-// 			</div>
-// 			<div className="mb-4">
-// 				<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-// 					Last Name
-// 				</label>
-// 				<input
-// 					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-// 					id="lastName"
-// 					type="text"
-// 					value={lastName}
-// 					onChange={handleLastNameChange}
-// 				/>
-// 			</div>
-// 			<div className="mb-4">
-// 				<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="pokemon">
-// 					Select Pokémon
-// 				</label>
-// 				<Select
-// 					options={pokemonOptions}
-// 					value={selectedPokemon}
-// 					onChange={handlePokemonSelect}
-// 				/>
-// 			</div>
-// 		</form>
-// 	);
-// };
-
-// export default Form;
-
 
 interface FormProps {
 	// Add props if needed
 }
 
 const Form: React.FC<FormProps> = () => {
-	const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+	const [selectedPokemons, setSelectedPokemons] = useState<Pokemon[]>([]);
 	const [pokemonOptions, setPokemonOptions] = useState<Pokemon[]>([]);
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
 
 	const handlePokemonSelect = (pokemon: Pokemon) => {
-		setSelectedPokemon(pokemon);
+		if (selectedPokemons.length < 4) {
+			setSelectedPokemons([...selectedPokemons, pokemon]);
+		}
+	};
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		console.log('Form submitted:', name, email, selectedPokemons);
+	};
+
+	const handleRemovePokemon = (pokemon: Pokemon) => {
+		setSelectedPokemons(selectedPokemons.filter((p) => p.id !== pokemon.id));
 	};
 
 	useEffect(() => {
@@ -106,22 +37,76 @@ const Form: React.FC<FormProps> = () => {
 					sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`,
 				}));
 				setPokemonOptions(pokemonOptions);
-			})
-			.catch(error => {
-				console.error(error);
 			});
 	}, []);
 
 	return (
-		<form>
-			<Select options={pokemonOptions} onChange={handlePokemonSelect} />
-			{selectedPokemon && (
-				<div>
-					<h2>Selected Pokémon: {selectedPokemon.name}</h2>
-					<img src={selectedPokemon.sprite} alt={selectedPokemon.name} />
+		<div className="max-w-md mx-auto p-4 bg-white rounded shadow-md">
+			<h2 className="text-lg font-bold mb-4">Pokémon Form</h2>
+			<form onSubmit={handleSubmit} className="flex flex-col">
+				<label className="block mb-2" htmlFor="name">
+					Name:
+				</label>
+				<input
+					type="text"
+					id="name"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					className="block w-full p-2 mb-4 border border-gray-400 rounded"
+				/>
+				<label className="block mb-2" htmlFor="email">
+					Email:
+				</label>
+				<input
+					type="email"
+					id="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					className="block w-full p-2 mb-4 border border-gray-400 rounded"
+				/>
+				<select
+					key="pokemon-select"
+					value={''}
+					onChange={(e) => {
+						const selectedPokemon = pokemonOptions.find((pokemon) => pokemon.id === parseInt(e.target.value));
+						console.log('Selected Pokémon:', selectedPokemon);
+						if (selectedPokemon !== undefined) {
+							handlePokemonSelect(selectedPokemon);
+						}
+					}}
+					className="block w-full p-2 mb-4 border border-gray-400 rounded"
+				>
+					<option key="default" value="">Select a Pokémon</option>
+					{pokemonOptions.map((pokemon) => (
+						<option key={pokemon.id} value={pokemon.id}>
+							{pokemon.name}
+						</option>
+					))}
+				</select>
+				<div className="mb-4">
+					<h3 className="text-lg font-bold mb-2">Selected Pokémon:</h3>
+					<ul>
+						{selectedPokemons.map((pokemon) => (
+							<li key={pokemon.id} className="py-2">
+								{pokemon.name}
+								<button
+									className="ml-2 text-red-500 hover:text-red-700"
+									onClick={() => handleRemovePokemon(pokemon)}
+								>
+									Remove
+								</button>
+							</li>
+						))}
+					</ul>
 				</div>
-			)}
-		</form>
+				<button
+					type="submit"
+					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+				>
+					Submit
+				</button>
+			</form>
+		</div>
 	);
 };
 
