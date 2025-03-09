@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import PokemonSelect from './PokemonSelect.tsx'
 import PokemonModal from './PokemonModal' // ✅ Import Modal
+import logo from '../assets/logos/LunaEdgeLogo.svg'
 
 // ✅ Define Type for Pokémon
 interface Pokemon {
@@ -53,11 +54,10 @@ export default function PokemonForm() {
 		setTrainerLastName(data.lastName)
 		setIsModalOpen(true) // ✅ Show Modal
 	}
-
 	return (
-		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white rounded-md">
+		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-300 rounded-md">
 			<div className="sm:mx-auto sm:w-full sm:max-w-sm">
-				<img alt="Company logo" src="../assets/logos/LunaEdgeLogo.svg" className="mx-auto h-10 w-auto" />
+				<img alt="Company logo" src={logo} className="mx-auto h-10 w-auto" />
 				<h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Pokémon Trainer Tower</h2>
 			</div>
 
