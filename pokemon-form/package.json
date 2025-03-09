@@ -9,8 +9,8 @@
 		"url": "https://github.com/Hailagaz"
 	},
   "scripts": {
-		"predeploy": "yarn run build",
-		"deploy": "gh-pages -d build",
+		"predeploy": "yarn build",
+		"deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
