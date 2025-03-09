@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import PokemonSelect from './PokemonSelect.tsx'
+import PokemonModal from './PokemonModal' // ✅ Import Modal
 
 // ✅ Define Type for Pokémon
 interface Pokemon {
@@ -27,6 +28,9 @@ export default function PokemonForm() {
 	} = useForm<FormData>({ mode: 'onChange' })
 
 	const [selectedPokemons, setSelectedPokemons] = useState<Pokemon[]>([])
+	const [isModalOpen, setIsModalOpen] = useState(false) // ✅ Modal state
+	const [trainerName, setTrainerName] = useState('')
+	const [trainerLastName, setTrainerLastName] = useState('')
 
 	const firstName = watch('firstName', '')
 	const lastName = watch('lastName', '')
@@ -41,9 +45,11 @@ export default function PokemonForm() {
 		/^[a-zA-Z]+$/.test(lastName) &&
 		selectedPokemons.length === 4
 
-	// ✅ Fix Type Error in Submit Function
+	// ✅ Handle Form Submission
 	const onSubmit: SubmitHandler<FormData> = (data) => {
-		alert(`Trainer: ${data.firstName} ${data.lastName}\nPokémon Team: ${selectedPokemons.map((p) => p.name).join(', ')}`)
+		setTrainerName(data.firstName)
+		setTrainerLastName(data.lastName)
+		setIsModalOpen(true) // ✅ Show Modal
 	}
 
 	return (
@@ -92,6 +98,15 @@ export default function PokemonForm() {
 					</button>
 				</form>
 			</div>
+
+			{/* ✅ Modal Window */}
+			<PokemonModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				trainerName={trainerName}
+				trainerLastName={trainerLastName}
+				selectedPokemons={selectedPokemons}
+			/>
 		</div>
 	)
 }
