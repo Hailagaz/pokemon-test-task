@@ -1,91 +1,65 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
+import axios from 'axios'
 
-const people = [
-	{
-		id: 1,
-		name: 'Wade Cooper',
-		avatar:
-			'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 2,
-		name: 'Arlene Mccoy',
-		avatar:
-			'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 3,
-		name: 'Devon Webb',
-		avatar:
-			'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80',
-	},
-	{
-		id: 4,
-		name: 'Tom Cook',
-		avatar:
-			'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 5,
-		name: 'Tanya Fox',
-		avatar:
-			'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 6,
-		name: 'Hellen Schmidt',
-		avatar:
-			'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 7,
-		name: 'Caroline Schultz',
-		avatar:
-			'https://images.unsplash.com/photo-1568409938619-12e139227838?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 8,
-		name: 'Mason Heaney',
-		avatar:
-			'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 9,
-		name: 'Claudie Smitham',
-		avatar:
-			'https://images.unsplash.com/photo-1584486520270-19eca1efcce5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		id: 10,
-		name: 'Emil Schaefer',
-		avatar:
-			'https://images.unsplash.com/photo-1561505457-3bcad021f8ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-]
+interface Pokemon {
+	id: number
+	name: string
+	avatar: string
+	sprite: string // Full sprite for later use
+}
 
 export default function PokemonSelect() {
-	const [selectedPeople, setSelectedPeople] = useState<typeof people>([]);
+	const [pokemonList, setPokemonList] = useState<Pokemon[]>([])
+	const [selectedPokemons, setSelectedPokemons] = useState<Pokemon[]>([])
 
-	const handleSelectionChange = (selectedValues: typeof people) => {
-		// If selection exceeds 4, keep previous state
-		if (selectedValues.length > 4) return;
-		setSelectedPeople(selectedValues);
-	};
+	// Fetch Pokémon list
+	useEffect(() => {
+		const fetchPokemon = async () => {
+			try {
+				const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=50')
+				const results = response.data.results
+
+				// Fetch details for each Pokémon
+				const pokemonDetails = await Promise.all(
+					results.map(async (pokemon: { name: string; url: string }) => {
+						const details = await axios.get(pokemon.url)
+						return {
+							id: details.data.id,
+							name: details.data.name,
+							avatar: details.data.sprites.front_default, // Use front sprite for dropdown
+							sprite: details.data.sprites.other['official-artwork'].front_default, // Full image for later
+						}
+					})
+				)
+				setPokemonList(pokemonDetails)
+			} catch (error) {
+				console.error('Error fetching Pokémon:', error)
+			}
+		}
+
+		fetchPokemon()
+	}, [])
+
+	// Handle selection (max 4 Pokémon)
+	const handleSelectionChange = (selectedValues: Pokemon[]) => {
+		if (selectedValues.length > 4) return // Prevent selecting more than 4
+		setSelectedPokemons(selectedValues)
+	}
 
 	return (
-		<Listbox value={selectedPeople} onChange={handleSelectionChange} multiple>
-			<Label className="block text-sm font-medium text-gray-900">Select your team (max 4)</Label>
+		<Listbox value={selectedPokemons} onChange={handleSelectionChange} multiple>
+			<Label className="block text-sm font-medium text-gray-900">Select your Pokémon team (max 4)</Label>
 			<div className="relative mt-2">
 				<ListboxButton className="w-full flex justify-between items-center bg-white border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					<div className="flex gap-2">
-						{selectedPeople.length > 0 ? (
-							selectedPeople.map((person) => (
-								<img key={person.id} src={person.avatar} alt={person.name} className="w-6 h-6 rounded-full" />
+						{selectedPokemons.length > 0 ? (
+							selectedPokemons.map((pokemon) => (
+								<img key={pokemon.id} src={pokemon.avatar} alt={pokemon.name} className="w-6 h-6 rounded-full" />
 							))
 						) : (
 							<span className="text-gray-500">Select Pokémon</span>
@@ -95,24 +69,24 @@ export default function PokemonSelect() {
 				</ListboxButton>
 
 				<ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full bg-white shadow-lg ring-1 ring-black/5 overflow-auto rounded-md py-1 text-base focus:outline-none sm:text-sm">
-					{people.map((person) => (
+					{pokemonList.map((pokemon) => (
 						<ListboxOption
-							key={person.id}
-							value={person}
+							key={pokemon.id}
+							value={pokemon}
 							className={({ active }) =>
 								`cursor-pointer select-none py-2 px-4 flex items-center justify-between ${active ? 'bg-indigo-600 text-white' : 'text-gray-900'
 								}`
 							}
 						>
 							<div className="flex items-center">
-								<img src={person.avatar} alt={person.name} className="w-6 h-6 rounded-full mr-2" />
-								<span>{person.name}</span>
+								<img src={pokemon.avatar} alt={pokemon.name} className="w-6 h-6 rounded-full mr-2" />
+								<span>{pokemon.name}</span>
 							</div>
-							{selectedPeople.some((p) => p.id === person.id) && <CheckIcon className="w-5 h-5 text-indigo-500" />}
+							{selectedPokemons.some((p) => p.id === pokemon.id) && <CheckIcon className="w-5 h-5 text-indigo-500" />}
 						</ListboxOption>
 					))}
 				</ListboxOptions>
 			</div>
 		</Listbox>
-	);
+	)
 }
