@@ -81,7 +81,7 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 				onChange={handleSelectionChange}
 				multiple
 			>
-				<Label className="block text-sm font-medium text-gray-900">Select your Pokémon team</Label>
+				<Label className="block text-sm font-medium text-white">Select your Pokémon team</Label>
 				<div className="relative mt-2">
 					<ListboxButton
 						className="w-full flex justify-between items-center bg-white border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"

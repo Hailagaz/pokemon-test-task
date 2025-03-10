@@ -55,17 +55,18 @@ export default function PokemonForm() {
 		setIsModalOpen(true) // ✅ Show Modal
 	}
 	return (
-		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-300 rounded-md">
+		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 rounded-md
+		shadow-md bg-gradient-to-r from-indigo-500 to-purple-500 bg-size-200 bg-pos-0">
 			<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 				<img alt="Company logo" src={logo} className="mx-auto h-10 w-auto" />
-				<h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Pokémon Trainer Tower</h2>
+				<h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-white">Pokémon Trainer Tower</h2>
 			</div>
 
 			<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 					{/* First Name */}
 					<div>
-						<label className="block text-sm font-medium text-gray-900">First name</label>
+						<label className="block text-sm font-medium text-white">First name</label>
 						<input
 							{...register('firstName', { required: true, minLength: 2, maxLength: 12, pattern: /^[a-zA-Z]+$/ })}
 							className="bg-white block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
@@ -75,7 +76,7 @@ export default function PokemonForm() {
 
 					{/* Last Name */}
 					<div>
-						<label className="block text-sm font-medium text-gray-900">Last name</label>
+						<label className="block text-sm font-medium text-white">Last name</label>
 						<input
 							{...register('lastName', { required: true, minLength: 2, maxLength: 12, pattern: /^[a-zA-Z]+$/ })}
 							className="bg-white block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
