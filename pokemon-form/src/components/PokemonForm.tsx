@@ -89,7 +89,8 @@ export default function PokemonForm() {
 					{/* Submit Button */}
 					<button
 						type="submit"
-						className={`w-full rounded-md px-3 py-1.5 text-sm font-semibold text-white ${isFormValid ? 'bg-indigo-600 hover:bg-indigo-500 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'
+						className={`w-full rounded-md px-5 py-2 text-sm font-semibold text-white transition-colors duration-300 border border-transparent
+							 ${isFormValid ? 'bg-indigo-600 hover:bg-indigo-500 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'
 							}`}
 						disabled={!isFormValid}
 					>
