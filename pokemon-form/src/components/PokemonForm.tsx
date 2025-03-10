@@ -56,7 +56,7 @@ export default function PokemonForm() {
 	}
 	return (
 		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 rounded-md
-		shadow-md bg-gradient-to-r from-indigo-500 to-purple-500 bg-size-200 bg-pos-0">
+		shadow-md bg-linear-to-r from-cyan-700 via-blue-500 to-indigo-600">
 			<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 				<img alt="Company logo" src={logo} className="mx-auto h-10 w-auto" />
 				<h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-white">Pokemon Trainer Tower</h2>
