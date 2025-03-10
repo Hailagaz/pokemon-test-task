@@ -86,9 +86,6 @@ export default function PokemonForm() {
 					{/* Pokémon Select */}
 					<PokemonSelect selectedPokemons={selectedPokemons} setSelectedPokemons={setSelectedPokemons} />
 
-					{/* Pokémon Selection Warning */}
-					{selectedPokemons.length !== 4 && <p className="text-red-500 text-sm">Select 4 Pokémon</p>}
-
 					{/* Submit Button */}
 					<button
 						type="submit"

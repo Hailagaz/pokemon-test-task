@@ -26,7 +26,6 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 	const [pokemonList, setPokemonList] = useState<Pokemon[]>([])
 	const [search, setSearch] = useState<string>('') // 🔍 Search Input State
 	const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]) // Filtered Pokémon List
-	const [isTouched, setIsTouched] = useState<boolean>(false) // 👆 Track User Interaction
 
 	// ✅ Fetch Pokémon List
 	useEffect(() => {
@@ -82,11 +81,10 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 				onChange={handleSelectionChange}
 				multiple
 			>
-				<Label className="block text-sm font-medium text-gray-900">Select your Pokémon team (max 4)</Label>
+				<Label className="block text-sm font-medium text-gray-900">Select your Pokémon team</Label>
 				<div className="relative mt-2">
 					<ListboxButton
 						className="w-full flex justify-between items-center bg-white border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-						onClick={() => setIsTouched(true)} // 👆 Mark as Touched
 					>
 						<div className="flex gap-2">
 							{selectedPokemons.length > 0 ? (
@@ -139,7 +137,7 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 			</Listbox>
 
 			{/* ⚠️ Show Warning Only After Interaction */}
-			{isTouched && selectedPokemons.length !== 4 && (
+			{selectedPokemons.length >= 1 && selectedPokemons.length < 4 && (
 				<p className="text-red-500 text-sm mt-2">Select 4 Pokémon</p>
 			)}
 		</div>
