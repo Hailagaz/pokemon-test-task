@@ -59,7 +59,7 @@ export default function PokemonModal({ isOpen, onClose, trainerName, trainerLast
 
 						{/* Close Button */}
 						<div className="mt-4">
-							<button onClick={onClose} className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500">
+							<button onClick={onClose} className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white cursor-pointer hover:bg-indigo-500">
 								Close
 							</button>
 						</div>

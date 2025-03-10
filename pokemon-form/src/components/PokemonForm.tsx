@@ -68,7 +68,7 @@ export default function PokemonForm() {
 						<label className="block text-sm font-medium text-gray-900">First name</label>
 						<input
 							{...register('firstName', { required: true, minLength: 2, maxLength: 12, pattern: /^[a-zA-Z]+$/ })}
-							className="block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
+							className="bg-white block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
 						/>
 						{errors.firstName && <p className="text-red-500 text-sm">First name must be 2-12 letters.</p>}
 					</div>
@@ -78,7 +78,7 @@ export default function PokemonForm() {
 						<label className="block text-sm font-medium text-gray-900">Last name</label>
 						<input
 							{...register('lastName', { required: true, minLength: 2, maxLength: 12, pattern: /^[a-zA-Z]+$/ })}
-							className="block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
+							className="bg-white block w-full rounded-md border px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 sm:text-sm"
 						/>
 						{errors.lastName && <p className="text-red-500 text-sm">Last name must be 2-12 letters.</p>}
 					</div>
@@ -89,7 +89,7 @@ export default function PokemonForm() {
 					{/* Submit Button */}
 					<button
 						type="submit"
-						className={`w-full rounded-md px-3 py-1.5 text-sm font-semibold text-white ${isFormValid ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-400 cursor-not-allowed'
+						className={`w-full rounded-md px-3 py-1.5 text-sm font-semibold text-white ${isFormValid ? 'bg-indigo-600 hover:bg-indigo-500 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'
 							}`}
 						disabled={!isFormValid}
 					>
