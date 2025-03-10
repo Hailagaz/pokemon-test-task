@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import PokemonSelect from './PokemonSelect.tsx'
-import PokemonModal from './PokemonModal' // ✅ Import Modal
+import PokemonModal from './PokemonModal'
 import logo from '../assets/logos/LunaEdgeLogo.svg'
 
-// ✅ Define Type for Pokémon
+// Define Type for Pokemon
 interface Pokemon {
 	id: number
 	name: string
@@ -16,7 +16,7 @@ interface Pokemon {
 	abilities: string[]
 }
 
-// ✅ Define the expected form structure
+// Define the expected form structure
 interface FormData {
 	firstName: string
 	lastName: string
@@ -31,14 +31,14 @@ export default function PokemonForm() {
 	} = useForm<FormData>({ mode: 'onChange' })
 
 	const [selectedPokemons, setSelectedPokemons] = useState<Pokemon[]>([])
-	const [isModalOpen, setIsModalOpen] = useState(false) // ✅ Modal state
+	const [isModalOpen, setIsModalOpen] = useState(false) // Modal state
 	const [trainerName, setTrainerName] = useState('')
 	const [trainerLastName, setTrainerLastName] = useState('')
 
 	const firstName = watch('firstName', '')
 	const lastName = watch('lastName', '')
 
-	// ✅ Check if Form is Valid
+	// Check if Form is Valid
 	const isFormValid =
 		firstName.length >= 2 &&
 		firstName.length <= 12 &&
@@ -48,18 +48,18 @@ export default function PokemonForm() {
 		/^[a-zA-Z]+$/.test(lastName) &&
 		selectedPokemons.length === 4
 
-	// ✅ Handle Form Submission
+	// Handle Form Submission
 	const onSubmit: SubmitHandler<FormData> = (data) => {
 		setTrainerName(data.firstName)
 		setTrainerLastName(data.lastName)
-		setIsModalOpen(true) // ✅ Show Modal
+		setIsModalOpen(true) // Show Modal
 	}
 	return (
 		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 rounded-md
 		shadow-md bg-gradient-to-r from-indigo-500 to-purple-500 bg-size-200 bg-pos-0">
 			<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 				<img alt="Company logo" src={logo} className="mx-auto h-10 w-auto" />
-				<h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-white">Pokémon Trainer Tower</h2>
+				<h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-white">Pokemon Trainer Tower</h2>
 			</div>
 
 			<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -84,7 +84,7 @@ export default function PokemonForm() {
 						{errors.lastName && <p className="text-red-500 text-sm">Last name must be 2-12 letters.</p>}
 					</div>
 
-					{/* Pokémon Select */}
+					{/* Pokemon Select */}
 					<PokemonSelect selectedPokemons={selectedPokemons} setSelectedPokemons={setSelectedPokemons} />
 
 					{/* Submit Button */}
@@ -100,7 +100,7 @@ export default function PokemonForm() {
 				</form>
 			</div>
 
-			{/* ✅ Modal Window */}
+			{/* Modal Window */}
 			<PokemonModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}

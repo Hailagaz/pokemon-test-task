@@ -6,7 +6,7 @@ import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 
-// ✅ Define Type for Pokémon
+// Define Type for Pokemon
 interface Pokemon {
 	id: number
 	name: string
@@ -16,7 +16,7 @@ interface Pokemon {
 	abilities: string[]
 }
 
-// ✅ Props for Passing Selected Pokémon State
+// Props for Passing Selected Pokemon State
 interface PokemonSelectProps {
 	selectedPokemons: Pokemon[]
 	setSelectedPokemons: (pokemons: Pokemon[]) => void
@@ -24,10 +24,10 @@ interface PokemonSelectProps {
 
 export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }: PokemonSelectProps) {
 	const [pokemonList, setPokemonList] = useState<Pokemon[]>([])
-	const [search, setSearch] = useState<string>('') // 🔍 Search Input State
-	const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]) // Filtered Pokémon List
+	const [search, setSearch] = useState<string>('') // Search Input State
+	const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]) // Filtered Pokemon List
 
-	// ✅ Fetch Pokémon List
+	// Fetch Pokemon List
 	useEffect(() => {
 		const fetchPokemon = async () => {
 			try {
@@ -50,14 +50,14 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 				setPokemonList(pokemonDetails)
 				setFilteredPokemons(pokemonDetails) // Set initial filtered list
 			} catch (error) {
-				console.error('Error fetching Pokémon:', error)
+				console.error('Error fetching Pokemon:', error)
 			}
 		}
 
 		fetchPokemon()
 	}, [])
 
-	// 🔍 Filter Pokémon List Based on Search Input
+	// Filter Pokemon List Based on Search Input
 	useEffect(() => {
 		if (search === '') {
 			setFilteredPokemons(pokemonList) // Reset when search is cleared
@@ -68,7 +68,7 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 		}
 	}, [search, pokemonList])
 
-	// ✅ Selection Handler (Max 4 Pokémon)
+	// Selection Handler (4 Pokemon)
 	const handleSelectionChange = (selectedValues: Pokemon[]) => {
 		if (selectedValues.length > 4) return
 		setSelectedPokemons(selectedValues)
@@ -81,7 +81,7 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 				onChange={handleSelectionChange}
 				multiple
 			>
-				<Label className="block text-sm font-medium text-white">Select your Pokémon team</Label>
+				<Label className="block text-sm font-medium text-white">Select your Pokemon team</Label>
 				<div className="relative mt-2">
 					<ListboxButton
 						className="w-full flex justify-between items-center bg-white border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -92,25 +92,25 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 									<img key={pokemon.id} src={pokemon.avatar} alt={pokemon.name} className="w-6 h-6 rounded-full" />
 								))
 							) : (
-								<span className="text-gray-500">Select Pokémon</span>
+								<span className="text-gray-500">Select Pokemon</span>
 							)}
 						</div>
 						<ChevronUpDownIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
 					</ListboxButton>
 
 					<ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full bg-white shadow-lg ring-1 ring-black/5 overflow-auto rounded-md py-1 text-base focus:outline-none sm:text-sm">
-						{/* 🔍 Search Input */}
+						{/* Search Input */}
 						<div className="px-3 py-2">
 							<input
 								type="text"
-								placeholder="Search Pokémon..."
+								placeholder="Search Pokemon..."
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
 								className="w-full border rounded-md p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
 							/>
 						</div>
 
-						{/* Filtered Pokémon List */}
+						{/* Filtered Pokemon List */}
 						{filteredPokemons.map((pokemon) => (
 							<ListboxOption
 								key={pokemon.id}
@@ -130,15 +130,15 @@ export default function PokemonSelect({ selectedPokemons, setSelectedPokemons }:
 
 						{/* No Results Found */}
 						{filteredPokemons.length === 0 && (
-							<div className="py-2 px-4 text-gray-500 text-center">No Pokémon found</div>
+							<div className="py-2 px-4 text-gray-500 text-center">No Pokemon found</div>
 						)}
 					</ListboxOptions>
 				</div>
 			</Listbox>
 
-			{/* ⚠️ Show Warning Only After Interaction */}
+			{/* Show Warning After Interaction */}
 			{selectedPokemons.length >= 1 && selectedPokemons.length < 4 && (
-				<p className="text-red-500 text-sm mt-2">Select 4 Pokémon</p>
+				<p className="text-red-500 text-sm mt-2">Select 4 Pokemon</p>
 			)}
 		</div>
 	)

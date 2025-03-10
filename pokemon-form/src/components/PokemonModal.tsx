@@ -3,7 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 
-// ✅ Modal Props
+// Modal Props
 interface ModalProps {
 	isOpen: boolean
 	onClose: () => void
@@ -30,7 +30,7 @@ export default function PokemonModal({ isOpen, onClose, trainerName, trainerLast
 							Trainer: <strong>{trainerName} {trainerLastName}</strong>
 						</p>
 
-						{/* Pokémon List */}
+						{/* Pokemon List */}
 						<div className="mt-4 space-y-4">
 							<h3 className="text-lg font-bold text-gray-900">Selected Pokemons</h3>
 							{selectedPokemons.map((pokemon) => (
@@ -39,7 +39,7 @@ export default function PokemonModal({ isOpen, onClose, trainerName, trainerLast
 									<div className="ml-4">
 										<p className="text-xl font-bold text-gray-900">{pokemon.name}</p>
 
-										{/* Pokémon Types */}
+										{/* Pokemon Types */}
 										<div className="flex space-x-2 mt-1">
 											{pokemon.types.map((type) => (
 												<span key={type} className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-md">
@@ -48,7 +48,7 @@ export default function PokemonModal({ isOpen, onClose, trainerName, trainerLast
 											))}
 										</div>
 
-										{/* Pokémon Abilities */}
+										{/* Pokemon Abilities */}
 										<p className="mt-2 text-sm text-gray-700">
 											<strong>Abilities:</strong> {pokemon.abilities.join(', ')}
 										</p>
