@@ -1,0 +1,14 @@
+{
+  "name": "pokemon-test-task",
+  "version": "1.0.0",
+  "description": "This project is a Pokemon Trainer Form built for the **Luna Edge technical interview**. It allows users to enter their **first name** and **last name**, select a **team of 4 Pokemon**, and submit the form to display their chosen Pokemon in a **modal**.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.30"
+  }
+}
