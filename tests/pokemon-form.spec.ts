@@ -13,7 +13,7 @@ const invalidTrainer = {
 
 test.describe('Pokemon Form Tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:5173');
+    await page.goto('https://hailagaz.github.io/pokemon-test-task/');
   });
 
   test('should display the form correctly', async ({ page }) => {
